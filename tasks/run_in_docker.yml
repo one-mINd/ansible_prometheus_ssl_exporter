@@ -1,8 +1,8 @@
 ---
 - name: Start docker ssl_exporter container
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     state: present
-    project_name: prometheus_ssl_exporter
+    project_name: "prometheus_{{ ssl_exporter_container_name }}"
     definition:
       version: '3.3'
       services:
@@ -17,6 +17,7 @@
           hostname: "{{ ansible_host }}"
           restart: always
           labels: "{{ ssl_exporter_docker_labels }}"
+          extra_hosts: "{{ ssl_exporter_extra_hosts | default([]) }}"
       networks:
         default:
           external: 
